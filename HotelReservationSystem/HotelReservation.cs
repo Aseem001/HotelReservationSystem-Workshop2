@@ -22,6 +22,7 @@ namespace HotelReservationSystem
         /// <param name="ratePerDay">The rate per day.</param>
         public static void AddHotel(string hotelName, int weekdayRate, int weekendRate)
         {
+            //UC 3 Refactor
             if(!hotelRecords.ContainsKey(hotelName))
             {
                 Hotel newHotel = new Hotel(hotelName, weekdayRate, weekendRate);
@@ -43,17 +44,38 @@ namespace HotelReservationSystem
                 Console.WriteLine("Enter the check-in date(DDMMMYYYY):");
                 DateTime checkinDate = DateTime.Parse(Console.ReadLine());
                 Console.WriteLine("Enter the check-out date(DDMMMYYYY):");
-                DateTime checkoutDate = DateTime.Parse(Console.ReadLine());
-                int noOfDays = (checkoutDate - checkinDate).Days + 1;
+                DateTime checkoutDate = DateTime.Parse(Console.ReadLine());              
                 Dictionary<string, int> rateRecords = new Dictionary<string, int>();
-                DateTime tempDate = checkinDate;                
-                foreach (var v in hotelRecords)
+
+                //UC 4 Refactor
+                foreach(var v in hotelRecords)
                 {
-                    int rate = v.Value.ratePerDay * noOfDays;
-                    rateRecords.Add(v.Value.hotelName, rate);
+                    int totalRate = 0;
+                    DateTime tempDate = checkinDate;
+                    while (tempDate <= checkoutDate)
+                    {
+                        //Checking if the day is weekend
+                        if (tempDate.DayOfWeek == DayOfWeek.Saturday || tempDate.DayOfWeek == DayOfWeek.Sunday)
+                        {
+                            totalRate += v.Value.weekendRate;
+                        }
+                        else
+                        {
+                            totalRate += v.Value.weekdayRate;
+                        }
+                        //Incrementing the current tempdate to next day
+                        tempDate = tempDate.AddDays(1);
+                    }
+                    rateRecords.Add(v.Value.hotelName, totalRate);
                 }
+                //Finds the key-value pair where rate is minimum by sorting the dictionary values in ascending order
                 var kvp = rateRecords.OrderBy(kvp => kvp.Value).First();
-                Console.WriteLine($"{kvp.Key},TotalRate:{kvp.Value}");
+                //Iterating the rateRecords dictionary to check how many hotels provide the minimum rate
+                foreach(var v in rateRecords)
+                {
+                    if(v.Value==kvp.Value)
+                        Console.WriteLine($"{v.Key},TotalRate:{v.Value}");
+                }
             }
             catch(Exception e)
             {
