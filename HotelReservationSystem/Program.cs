@@ -13,9 +13,14 @@ namespace HotelReservationSystem
         static void Main(string[] args)
         {
             Console.WriteLine("Welcome to Hotel Reservation Program:\n");
+
+            //UC 1
             HotelReservation.AddHotel("Lakewood", 110);
             HotelReservation.AddHotel("Bridgewood", 150);
-            HotelReservation.AddHotel("Ridgewood", 220);            
+            HotelReservation.AddHotel("Ridgewood", 220);
+
+            //UC 2
+            HotelReservation.FindCheapestHotel();
             Console.ReadLine();
         }
     }
