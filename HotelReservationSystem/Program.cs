@@ -27,6 +27,9 @@ namespace HotelReservationSystem
 
             //UC 2
             HotelReservation.FindCheapestHotel();
+
+            //UC 6
+            HotelReservation.FindCheapestBestRatedHotel();
             
             Console.ReadLine();
         }

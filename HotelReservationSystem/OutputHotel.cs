@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Hotel.cs" company="Bridgelabz">
+// <copyright file="OutputHotel.cs" company="Bridgelabz">
 //   Copyright © 2018 Company
 // </copyright>
 // <creator Name="Aseem Anand"/>
@@ -10,20 +10,20 @@ namespace HotelReservationSystem
     using System.Collections.Generic;
     using System.Text;
 
-    public class Hotel
+    /// <summary>
+    /// UC 6 : Class to represent objects of output hotels after filtering to be presented at frontEnd
+    /// </summary>
+    public class OutputHotel
     {
         public string hotelName;
-        //UC 3 Refactor to add weekend and weekdays rate
-        public int weekdayRate;
-        public int weekendRate;
-        //UC 5 Refactor to add ratings to each hotel
         public int ratings;
-        
-        public Hotel(string hotelName,int weekdayRate,int weekendRate)
+        public int totalRate;
+
+        public OutputHotel(string hotelName,int ratings,int totalRate)
         {
             this.hotelName = hotelName;
-            this.weekdayRate = weekdayRate;
-            this.weekendRate = weekendRate;            
-        }              
+            this.ratings = ratings;
+            this.totalRate = totalRate;
+        }
     }
 }
