@@ -30,6 +30,9 @@ namespace HotelReservationSystem
 
             //UC 6
             HotelReservation.FindCheapestBestRatedHotel();
+
+            //UC 7
+            HotelReservation.FindBestRatedHotel();
             
             Console.ReadLine();
         }
