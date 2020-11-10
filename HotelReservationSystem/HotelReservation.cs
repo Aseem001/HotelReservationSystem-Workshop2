@@ -61,24 +61,17 @@ namespace HotelReservationSystem
         /// Calculates the rate for each hotel and stores in dictionary.
         /// </summary>
         /// <returns></returns>
-        public static Dictionary<string,OutputHotel> CalculateRateForEachHotel()
+        public static Dictionary<string,OutputHotel> CalculateRateForEachHotel(DateTime checkinDate, DateTime checkoutDate,CustomerType customerType)
         {
             try
-            {
-                Console.WriteLine("Enter:\n1.If you are a REGULAR customer\n2.If you are a REWARDS customer");
-                int options = Convert.ToInt32(Console.ReadLine());                
-                Console.WriteLine("Enter the check-in date(DDMMMYYYY):");
-                DateTime checkinDate = DateTime.Parse(Console.ReadLine());
-                Console.WriteLine("Enter the check-out date(DDMMMYYYY):");
-                DateTime checkoutDate = DateTime.Parse(Console.ReadLine()); 
-                
+            {                               
                 if(checkinDate>checkoutDate)
                     throw new HotelReservationCustomException(HotelReservationCustomException.ExceptionType.INVALID_DATE_RANGE, "CHECKOUT DATE MUST BE AHEAD OF CHECKIN DATE");
 
                 Dictionary<string, OutputHotel> rateRecordsForRegularCustomer = new Dictionary<string, OutputHotel>();
                 Dictionary<string, OutputHotel> rateRecordsForRewardsCustomer = new Dictionary<string, OutputHotel>();
 
-                if (options == 1)
+                if (customerType==CustomerType.REGULAR_CUSTOMER)
                 {
                     //UC 4 Refactor
                     foreach (var v in hotelRecordsRegularCustomer)
@@ -105,7 +98,7 @@ namespace HotelReservationSystem
                     }
                     return rateRecordsForRegularCustomer;
                 }
-                else if (options == 2)
+                else if (customerType==CustomerType.REWARDS_CUSTOMER)
                 {
                     //UC 4 Refactor
                     foreach (var v in hotelRecordsRewardsCustomer)
@@ -144,9 +137,10 @@ namespace HotelReservationSystem
         /// <summary>
         /// UC 2,4 : Finds the cheapest hotel.
         /// </summary>
-        public static void FindCheapestHotel()
+        public static List<OutputHotel> FindCheapestHotel(DateTime checkinDate, DateTime checkoutDate, CustomerType customerType)
         {
-            var rateRecords = CalculateRateForEachHotel();
+            List<OutputHotel> outputHotelList = new List<OutputHotel>();
+            var rateRecords = CalculateRateForEachHotel(checkinDate,checkoutDate,customerType);
             //Finds the key-value pair where rate is minimum by sorting the dictionary values in ascending order
             var kvp = rateRecords.OrderBy(kvp => kvp.Value.totalRate).First();
             //Iterating the rateRecords dictionary to check how many hotels provide the minimum rate
@@ -154,8 +148,12 @@ namespace HotelReservationSystem
             {
                 //Checks where the minimum rate matches and displays the HotelName and Rate
                 if (v.Value.totalRate == kvp.Value.totalRate)
+                {
                     Console.WriteLine($"{v.Key},TotalRate:{v.Value.totalRate}");
+                    outputHotelList.Add(v.Value);
+                }
             }
+            return outputHotelList;
         }
 
         /// <summary>
@@ -188,10 +186,11 @@ namespace HotelReservationSystem
         /// <summary>
         /// UC 6 : Finds the cheapest best rated hotel.
         /// </summary>
-        public static void FindCheapestBestRatedHotel()
+        public static List<OutputHotel> FindCheapestBestRatedHotel(DateTime checkinDate, DateTime checkoutDate, CustomerType customerType)
         {
+            List<OutputHotel> outputHotelList = new List<OutputHotel>();
             //Get the raterecords dictionary
-            var rateRecords = CalculateRateForEachHotel();
+            var rateRecords = CalculateRateForEachHotel(checkinDate,checkoutDate,customerType);
             //Dictionary initialized to store details of hotels with cheapest rate
             Dictionary<string, OutputHotel> cheapestRateDict = new Dictionary<string, OutputHotel>();
             var kvp = rateRecords.OrderBy(kvp => kvp.Value.totalRate).First();
@@ -207,24 +206,33 @@ namespace HotelReservationSystem
             {
                 //Checks how many hotels have the rating=maxRating and prints the details
                 if(v.Value.ratings== maxRating)
+                {
                     Console.WriteLine($"{v.Key},Ratings:{v.Value.ratings},TotalRate:{v.Value.totalRate}");
+                    outputHotelList.Add(v.Value);
+                }
             }
+            return outputHotelList;
         }
 
         /// <summary>
         /// UC 7 : Finds the best rated hotel amongst all hotels and displays the HotelName and total estimated rate for dates entered.
         /// </summary>
-        public static void FindBestRatedHotel()
+        public static List<OutputHotel> FindBestRatedHotel(DateTime checkinDate, DateTime checkoutDate, CustomerType customerType)
         {
-            var rateRecords = CalculateRateForEachHotel();
+            List<OutputHotel> outputHotelList = new List<OutputHotel>();
+            var rateRecords = CalculateRateForEachHotel(checkinDate,checkoutDate,customerType);
             //Finds the hotel with max rating
             int maxRating = rateRecords.Select(item => item.Value.ratings).Max();
             foreach(var v in rateRecords)
             {
                 //Check if hotels(one or many) have rating=maxRating and display their details
                 if(v.Value.ratings==maxRating)
+                {
                     Console.WriteLine($"{v.Key},TotalRate:{v.Value.totalRate}");
+                    outputHotelList.Add(v.Value);
+                }
             }
+            return outputHotelList;
         }
 
         /// <summary>

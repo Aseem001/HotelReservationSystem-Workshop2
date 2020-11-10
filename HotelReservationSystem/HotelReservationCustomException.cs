@@ -1,9 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="HotelReservationCustomException.cs" company="Bridgelabz">
+//   Copyright © 2018 Company
+// </copyright>
+// <creator Name="Aseem Anand"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace HotelReservationSystem
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+
     /// <summary>
     /// Custom Exceptions
     /// </summary>

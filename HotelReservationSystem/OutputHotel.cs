@@ -25,5 +25,30 @@ namespace HotelReservationSystem
             this.ratings = ratings;
             this.totalRate = totalRate;
         }
+
+        /// <summary>
+        ///  Overridden to decide if the two instances of the classs are equal on the basis of hotelname and total rate
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
+        public override bool Equals(object obj)
+        {
+            // If the passed object is null
+            if (obj == null)
+            {
+                return false;
+            }
+            if (!(obj is OutputHotel))
+            {
+                return false;
+            }
+            return (this.hotelName == ((OutputHotel)obj).hotelName)
+                && (this.totalRate == ((OutputHotel)obj).totalRate);
+        }
+        public override int GetHashCode()
+        {
+            return hotelName.GetHashCode() ^ totalRate.GetHashCode();
+        }
     }
+
 }

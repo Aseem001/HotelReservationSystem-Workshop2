@@ -14,7 +14,21 @@ namespace HotelReservationSystem
         {
             Console.WriteLine("Welcome to Hotel Reservation Program:\n");
             //Addition of hotel with ratings into records
-            HotelReservation.AddRatingsAndHotel();            
+            HotelReservation.AddRatingsAndHotel();
+            //Choosing if the user is regular or rewards
+            Console.WriteLine("Enter:\n1.If you are a REGULAR customer\n2.If you are a REWARDS customer");
+            int customerTypeChoice = Convert.ToInt32(Console.ReadLine());
+            CustomerType customerType;
+            if (customerTypeChoice == 1)
+                customerType = CustomerType.REGULAR_CUSTOMER;
+            else
+                customerType = CustomerType.REWARDS_CUSTOMER;
+            //Getting dates from user
+            Console.WriteLine("Enter the check-in date(DDMMMYYYY):");
+            DateTime checkinDate = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine("Enter the check-out date(DDMMMYYYY):");
+            DateTime checkoutDate = DateTime.Parse(Console.ReadLine());
+            
             bool flag = true;
             while(flag)
             {
@@ -24,15 +38,15 @@ namespace HotelReservationSystem
                 {
                     case 1:
                         //UC 2
-                        HotelReservation.FindCheapestHotel();
+                        HotelReservation.FindCheapestHotel(checkinDate,checkoutDate,customerType);
                         break;
                     case 2:
                         //UC 7
-                        HotelReservation.FindBestRatedHotel();
+                        HotelReservation.FindBestRatedHotel(checkinDate, checkoutDate, customerType);
                         break;
                     case 3:
                         //UC 6
-                        HotelReservation.FindCheapestBestRatedHotel();
+                        HotelReservation.FindCheapestBestRatedHotel(checkinDate, checkoutDate, customerType);
                         break;
                     case 4:
                         flag = false;
